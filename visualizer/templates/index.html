@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<!--
+    Massively by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+{% load staticfiles %}
+<html>
+    <head>
+        <title>Artilizer - The Article Visualizer</title>
+        <link rel="stylesheet" type="text/css" href="{% static "musicplayer/360player.css" %}" />
+
+<!-- special IE-only canvas fix -->
+<!--[if IE]><script type="text/javascript" src="script/excanvas.js"></script><![endif]-->
+
+<!-- Apache-licensed animation library -->
+<script type="text/javascript" src="{% static "musicplayer/script/berniecode-animator.js" %}"></script>
+
+<!-- the core stuff -->
+<script type="text/javascript" src="{% static "musicplayer/script/soundmanager2.js" %}"></script>
+<script type="text/javascript" src="{% static "musicplayer/script/360player.js" %}"></script>
+
+<script type="text/javascript">
+soundManager.setup({
+  // path to directory containing SM2 SWF
+  url: '../../swf/'
+});
+</script>
+
+<!-- stuff you don't need -->
+<!-- makes the fonts nicer etc. -->
+<link rel="stylesheet" type="text/css" href="{% static "musicplayer/index.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% static "musicplayer/demo.css" %}" />
+
+<!-- soundManager.useFlashBlock: related CSS -->
+<link rel="stylesheet" type="text/css" href="{% static "musicplayer/flashblock/flashblock.css" %}" />
+
+<style type="text/css">
+
+/* Demo page, general layout */
+
+body {
+ background-image: none;
+}
+
+#left {
+ position:relative;
+ width:950px;
+ max-width:100%;
+}
+
+#left h2 {
+ padding-top:0px;
+ margin-bottom:0.25em;
+ color:#666;
+}
+
+pre.block {
+ margin-top:0.5em;
+}
+
+</style>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="{% static "index/assets/css/main.css" %}" />
+        <noscript><link rel="stylesheet" href="{% static "index/assets/css/noscript.css" %}" /></noscript>
+
+    </head>
+    <body class="is-preload">
+
+        <!-- Wrapper -->
+            <div id="wrapper" class="fade-in">
+
+                <!-- Intro -->
+                    <div id="intro">
+                        <h1>Artilizer<br />
+                        The Article Visualizer</h1>
+                        <p>Watch your Articles <i>via</i> Visualizing Contents ! </a>.</p>
+                        <ul class="actions">
+                            <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
+                        </ul>
+                    </div>
+
+                <!-- Header -->
+                    <header id="header">
+                        <a href="" class="logo">Artilizer</a>
+                    </header>
+
+                <!-- Nav -->
+                    <nav id="nav">
+                        <ul class="links">
+                            <li class="active"><a href="">Home</a></li>
+                        </ul>
+                    </nav>
+
+                <!-- Main -->
+                    <div id="main">
+<form action="/create/" method="post">
+
+                                        <label for="message">Paste your Article</label>
+                                        <textarea name="parag" id="parag" rows="3"></textarea>
+    <input type="submit" value="Create">
+</form>
+                                       
+                        <!-- Posts -->
+                            <section class="posts">
+</section>
+ <!-- note the CSS class, changes the layout -->
+
+      
+     </div>
+
+    </div>
+
+                            
+                    <footer id="footer">
+                        <section>
+                            <form method="post" action="#">
+                                <div class="fields">
+                                    <div class="field">
+                                        <label for="name">Name</label>
+                                        <input type="text" name="name" id="name" />
+                                    </div>
+                                    <div class="field">
+                                        <label for="email">Email</label>
+                                        <input type="text" name="email" id="email" />
+                                    </div>
+                                    <div class="field">
+                                        <label for="message">Message</label>
+                                        <textarea name="message" id="message" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </section>
+                        <section class="split contact">
+                            <section class="alt">
+                                <h3>Address</h3>
+                                <p></p>
+                            </section>
+                            <section>
+                                <h3>Phone</h3>
+                                <p><a href="#"></a></p>
+                            </section>
+                            <section>
+                                <h3>Email</h3>
+                                <p><a href="#">@gmail.com</a></p>
+                            </section>
+                            <section>
+                                <h3>Social</h3>
+                                <ul class="icons alt">
+                                    <li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+                                    <li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+                                    <li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+                                    <li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+                                </ul>
+                            </section>
+                        </section>
+                    </footer>
+
+                <!-- Copyright -->
+                    <div id="copyright">
+                        <ul><li>&copy; Team Artilizer</li></ul>
+                    </div>
+
+            </div>
+
+        <!-- Scripts -->
+            <script src="{% static "index/assets/js/jquery.min.js" %}"></script>
+            <script src="{% static "index/assets/js/jquery.scrollex.min.js" %}"></script>
+            <script src="{% static "index/assets/js/jquery.scrolly.min.js" %}"></script>
+            <script src="{% static "index/assets/js/browser.min.js" %}"></script>
+            <script src="{% static "index/assets/js/breakpoints.min.js" %}"></script>
+            <script src="{% static "index/assets/js/util.js" %}"></script>
+            <script src="{% static "index/assets/js/main.js" %}"></script>
+
+    </body>
+</html>
