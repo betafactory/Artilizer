@@ -27,7 +27,6 @@ import cv2
 from wsgiref.util import FileWrapper
 import mimetypes
 import os
-from visualizer.models import Video
 from nltk.stem.porter import PorterStemmer
 import os, shutil
 
@@ -164,12 +163,14 @@ def create(request):
 		stop_words = stopwords.words('english')
 		summarize_text = []
 		# Step 1 - Read text anc split it
-		top_n=10
 		article = data.split(". ")
 		sentences = []
+		count_sentence = 0
 		for sentence in article:
+			count_sentence = count_sentence + 1
 			sentences.append(sentence.replace("[^a-zA-Z]", " ").split(" "))
 		sentences.pop() 
+		top_n= int(count_sentence/3)
 		# Step 2 - Generate Similary Martix across sentences
 		sentence_similarity_martix = build_similarity_matrix(sentences, stop_words)
 		# Step 3 - Rank sentences in similarity martix
