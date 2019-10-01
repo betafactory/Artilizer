@@ -27,7 +27,7 @@ A) Watch them instead of reading *via* .**Visualizing Contents**.
  - Clone the project using `git clone` command.
  - Type `cd Artilizer`
  - If virtualenv is not installed, run sudo apt-get install pipenv followed by:
-	`pipenv install | pipenv shell (Ubuntu / Mac)`
+	`pipenv install | pipenv shell` (Ubuntu / Mac)
  - Run `python manage.py migrate`.
  - Run `python manage.py collectstatic`
  - Start the server using `python manage.py` runserver and visit `http://localhost:8000`
@@ -41,5 +41,5 @@ A) Watch them instead of reading *via* .**Visualizing Contents**.
 
 ## Todo
 
- - Work on the Sentiment Analyser
- - Article Summarizer Efficiency
+  - [ ]  Work on the Sentiment Analyser
+  - [ ]  Article Summarizer Efficiency
