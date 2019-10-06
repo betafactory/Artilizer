@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2ab9f60bfce9aa484ddd95be17dc3105d4072f898ab5f744ba1c5798a1ac50a7"
+            "sha256": "194f66f67d1989427d7a635052f8336f531d68fa6d1e80d16f84d7c8e725c3ac"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,14 @@
         ]
     },
     "default": {
+        "beautifulsoup4": {
+            "hashes": [
+                "sha256:05668158c7b85b791c5abde53e50265e16f98ad601c402ba44d70f96c4159612",
+                "sha256:25288c9e176f354bf277c0a10aa96c782a6a18a17122dba2e8cec4a97e03343b",
+                "sha256:f040590be10520f2ea4c2ae8c3dae441c7cfff5308ec9d58a0ec0c1b8f81d469"
+            ],
+            "version": "==4.8.0"
+        },
         "certifi": {
             "hashes": [
                 "sha256:e4f3620cfea4f83eedc95b24abd9cd56f3c4b146dd0177e83a21b4eb49e21e50",
@@ -29,6 +37,13 @@
                 "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"
             ],
             "version": "==3.0.4"
+        },
+        "click": {
+            "hashes": [
+                "sha256:2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13",
+                "sha256:5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7"
+            ],
+            "version": "==7.0"
         },
         "decorator": {
             "hashes": [
@@ -59,6 +74,21 @@
             ],
             "index": "pypi",
             "version": "==2.8.0"
+        },
+        "gtts": {
+            "hashes": [
+                "sha256:3fa2cac878885fb50b9eb7c79a0179d70fb0e36c1c68589d0a08b49745f6e16c",
+                "sha256:79300af5a61936fd525a0805d5fa85ae77db7301932af251e52fcefddb14de60",
+                "sha256:d5b495e521b098218b48fa1edec35cb13775ec0b49eb1ca31c7c55a9d1a73bff"
+            ],
+            "index": "pypi",
+            "version": "==2.0.4"
+        },
+        "gtts-token": {
+            "hashes": [
+                "sha256:9d6819a85b813f235397ef931ad4b680f03d843c9b2a9e74dd95175a4bc012c5"
+            ],
+            "version": "==1.1.3"
         },
         "idna": {
             "hashes": [
@@ -307,6 +337,13 @@
             ],
             "index": "pypi",
             "version": "==0.0"
+        },
+        "soupsieve": {
+            "hashes": [
+                "sha256:605f89ad5fdbfefe30cdc293303665eff2d188865d4dbe4eb510bba1edfbfce3",
+                "sha256:b91d676b330a0ebd5b21719cb6e9b57c57d433671f65b9c28dd3461d9a1ed0b6"
+            ],
+            "version": "==1.9.4"
         },
         "sqlparse": {
             "hashes": [
