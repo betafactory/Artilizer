@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 
@@ -26,6 +26,7 @@ import glob
 import cv2
 from wsgiref.util import FileWrapper
 import mimetypes
+from visualizer.models import Video
 import os
 from nltk.stem.porter import PorterStemmer
 import os, shutil
@@ -140,6 +141,7 @@ def train(request):
 def create(request):
 	if request.method == 'POST':
 		data = request.POST['parag']
+		paragraph = data
 		text = data.replace('\n', '')	
 		data = text
 		for k in text.split("\n"):
@@ -156,7 +158,7 @@ def create(request):
 
 		s = [(k, freq[k]) for k in sorted(freq, key=freq.get, reverse=True)]
 		title = s[0][0] 
-		search_queries = [sorted(freq.items(), key = lambda kv:(kv[1], kv[0]), reverse=True)[0][0] +"  "+ sorted(freq.items(), key = lambda kv:(kv[1], kv[0]), reverse=True)[1][0]+"  "+ sorted(freq.items(), key = lambda kv:(kv[1], kv[0]), reverse=True)[2][0]+"  "+ sorted(freq.items(), key = lambda kv:(kv[1], kv[0]), reverse=True)[3][0]+"  "+ sorted(freq.items(), key = lambda kv:(kv[1], kv[0]), reverse=True)[4][0]]
+		search_queries = [sorted(freq.items(), key = lambda kv:(kv[1], kv[0]), reverse=True)[0][0] +"  "+ sorted(freq.items(), key = lambda kv:(kv[1], kv[0]), reverse=True)[1][0]]
 		for query in search_queries: 
 			downloadimages(query)
 
@@ -226,15 +228,15 @@ def create(request):
 		final_clip.write_videofile("visualizer/output/"+title+'.mp4')
 		data = title
 		file_path = 'visualizer/output/'+data+'.mp4'
-		file_wrapper = FileWrapper(open(file_path,'rb'))
-		file_mimetype = mimetypes.guess_type(file_path)
-		response = HttpResponse(file_wrapper, content_type=file_mimetype )
-		response['X-Sendfile'] = file_path
-		response['Content-Length'] = os.stat(file_path).st_size
-		response['Content-Disposition'] = 'attachment; filename=%s/' % (data+".mp4") 
-		return response
-	if request.method == 'GET':
-		return render(
-    	request,
-        'index.html'
-    )
+		video = Video()
+		video.data = paragraph
+		video.name = data
+		video.videofile = file_path
+		video.save()
+		return redirect(video.videofile.url)
+
+	# if request.method == 'GET':
+	# 	return render(
+ #    	request,
+ #        'index.html'
+ #    )
