@@ -30,8 +30,10 @@ from visualizer.models import Video
 import os
 from nltk.stem.porter import PorterStemmer
 import os, shutil
+from gtts import gTTS 
 
 folder = 'visualizer/images'
+language = 'en'
 
 def index(request):
 
@@ -167,6 +169,7 @@ def create(request):
 		# Step 1 - Read text anc split it
 		article = data.split(". ")
 		sentences = []
+		sentences_list = ''
 		count_sentence = 0
 		for sentence in article:
 			count_sentence = count_sentence + 1
@@ -188,6 +191,7 @@ def create(request):
 		with open("visualizer/input/op.tsv", "w") as text_file:
 			text_file.write("content"+"\t"+"val"+'\n')
 			for i in summarize_text:
+				sentences_list = sentences_list + i
 				search_queries.append(i)
 				text_file.write(i+"\t"+str(m)+'\n')
 				m=m+1
@@ -221,9 +225,14 @@ def create(request):
 		        #elif os.path.isdir(file_path): shutil.rmtree(file_path)
 		    except Exception as e:
 		        print(e)
+		textClip = gTTS(text=sentences_list, lang=language, slow=False) 
+		textClip.save("visualizer/output/voice.mp3") 
+		audioclip = mpe.AudioFileClip("visualizer/output/voice.mp3")
 		my_clip = mpe.VideoFileClip('visualizer/output/project.avi')
 		audio_background = mpe.AudioFileClip('visualizer/emotions/'+emotion+'.mp3')
-		final_audio = mpe.CompositeAudioClip([audio_background])
+		new_audioclip = mpe.CompositeAudioClip([audio_background.volumex(0.1), audioclip])
+
+		final_audio = mpe.CompositeAudioClip([new_audioclip])
 		final_clip = my_clip.set_audio(final_audio)
 		final_clip.write_videofile("visualizer/output/"+title+'.mp4')
 		data = title
@@ -235,8 +244,8 @@ def create(request):
 		video.save()
 		return redirect(video.videofile.url)
 
-	# if request.method == 'GET':
-	# 	return render(
- #    	request,
- #        'index.html'
- #    )
+	if request.method == 'GET':
+		return render(
+    	request,
+        'index.html'
+    )

@@ -15,6 +15,7 @@ google-images-download = "*"
 networkx = "*"
 moviepy = "*"
 opencv-python = "*"
+gtts = "*"
 
 [requires]
 python_version = "3.*"
