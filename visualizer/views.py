@@ -32,21 +32,20 @@ from nltk.stem.porter import PorterStemmer
 import os, shutil
 from gtts import gTTS 
 
-folder = 'visualizer/images'
+
 language = 'en'
 
 def index(request):
-
     return render(request,'index.html')
 
 
-def downloadimages(query): 
+def downloadimages(query,title): 
 	response = google_images_download.googleimagesdownload()  
-	arguments = {"keywords": query, "format": "jpg", "limit":1,"print_urls":False, "size": "large", "aspect_ratio": "panoramic","no_directory":"1","output_directory":"visualizer/images/"} 
+	arguments = {"keywords": query, "format": "jpg", "limit":1,"print_urls":False, "size": "large", "aspect_ratio": "panoramic","no_directory":"1","output_directory":"visualizer/images/"+title+"/"} 
 	try: 
 		response.download(arguments) 
 	except FileNotFoundError:
-		arguments = {"keywords": query,"format": "jpg", "limit":1,  "print_urls":False,   "size": "large","no_directory":"1","output_directory":"visualizer/images/"} 
+		arguments = {"keywords": query,"format": "jpg", "limit":1,  "print_urls":False,   "size": "large","no_directory":"1","output_directory":"visualizer/images/"+title+"/"} 
 		try: 
 			response.download(arguments) 
 		except: 
@@ -121,6 +120,7 @@ def predict():
 
 	numbers = all_predictions.tolist()
 	b=sorted(numbers, key=Counter(numbers).get, reverse=True)
+	print(b[0])
 	return b[0]
 
 
@@ -162,7 +162,7 @@ def create(request):
 		title = s[0][0] 
 		search_queries = [sorted(freq.items(), key = lambda kv:(kv[1], kv[0]), reverse=True)[0][0] +"  "+ sorted(freq.items(), key = lambda kv:(kv[1], kv[0]), reverse=True)[1][0]]
 		for query in search_queries: 
-			downloadimages(query)
+			downloadimages(query,title)
 
 		stop_words = stopwords.words('english')
 		summarize_text = []
@@ -203,9 +203,9 @@ def create(request):
 			ps = PorterStemmer()
 			review = [ps.stem(word) for word in review if not word in set(stopwords.words('english'))]
 			review = ' '.join(review)
-			downloadimages(review)  
+			downloadimages(review,title)  
 		img_array = []
-		for filename in glob.glob('visualizer/images/*.jpg'):
+		for filename in glob.glob('visualizer/images/'+title+'/*.jpg'):
 			img = cv2.imread(filename)
 			height, width, layers = img.shape
 			size = (width,height)
@@ -217,6 +217,7 @@ def create(request):
 			img = cv2.resize(img, size)
 			out.write(img)
 		out.release()
+		folder = 'visualizer/images/'+title+'/'
 		for the_file in os.listdir(folder):
 		    file_path = os.path.join(folder, the_file)
 		    try:
@@ -230,10 +231,11 @@ def create(request):
 		audioclip = mpe.AudioFileClip("visualizer/output/voice.mp3")
 		my_clip = mpe.VideoFileClip('visualizer/output/project.avi')
 		audio_background = mpe.AudioFileClip('visualizer/emotions/'+emotion+'.mp3')
-		new_audioclip = mpe.CompositeAudioClip([audio_background.volumex(0.1), audioclip])
+		new_audioclip = mpe.CompositeAudioClip([audio_background.volumex(0.08), audioclip.volumex(1)])
 
 		final_audio = mpe.CompositeAudioClip([new_audioclip])
-		final_clip = my_clip.set_audio(final_audio)
+		audio = mpe.afx.audio_loop( final_audio, duration=audioclip.duration)
+		final_clip = my_clip.set_audio(audio)
 		final_clip.write_videofile("visualizer/output/"+title+'.mp4')
 		data = title
 		file_path = 'visualizer/output/'+data+'.mp4'
