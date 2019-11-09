@@ -21,9 +21,8 @@ from collections import Counter
 import numpy as np
 import networkx as nx
 stopwords.words('english')[0:10]
-import moviepy.editor as mpe
+from moviepy.editor import * 
 import glob
-import cv2
 from wsgiref.util import FileWrapper
 import mimetypes
 from visualizer.models import Video
@@ -31,6 +30,7 @@ import os
 from nltk.stem.porter import PorterStemmer
 import os, shutil
 from gtts import gTTS 
+from natsort import natsorted
 
 
 language = 'en'
@@ -204,19 +204,18 @@ def create(request):
 			review = [ps.stem(word) for word in review if not word in set(stopwords.words('english'))]
 			review = ' '.join(review)
 			downloadimages(review,title)  
-		img_array = []
-		for filename in glob.glob('visualizer/images/'+title+'/*.jpg'):
-			img = cv2.imread(filename)
-			height, width, layers = img.shape
-			size = (width,height)
-			img_array.append(img)
-		 
-		out = cv2.VideoWriter('visualizer/output/project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 0.2, size)
-		for i in range(len(img_array)):
-			img = img_array[i]
-			img = cv2.resize(img, size)
-			out.write(img)
-		out.release()
+			
+		fps = 0.2
+
+		file_list = glob.glob('visualizer/images/'+title+'/*.jpg')  # Get all the pngs in the current directory
+		file_list_sorted = natsorted(file_list,reverse=False)  # Sort the images
+
+		clips = [ImageClip(m).set_duration(5)
+		         for m in file_list_sorted]
+
+		concat_clip = concatenate(clips, method="compose")
+		concat_clip.write_videofile("visualizer/output/project.mp4", fps=fps)
+
 		folder = 'visualizer/images/'+title+'/'
 		for the_file in os.listdir(folder):
 		    file_path = os.path.join(folder, the_file)
@@ -228,13 +227,13 @@ def create(request):
 		        print(e)
 		textClip = gTTS(text=sentences_list, lang=language, slow=False) 
 		textClip.save("visualizer/output/voice.mp3") 
-		audioclip = mpe.AudioFileClip("visualizer/output/voice.mp3")
-		my_clip = mpe.VideoFileClip('visualizer/output/project.avi')
-		audio_background = mpe.AudioFileClip('visualizer/emotions/'+emotion+'.mp3')
-		new_audioclip = mpe.CompositeAudioClip([audio_background.volumex(0.08), audioclip.volumex(1)])
+		audioclip = AudioFileClip("visualizer/output/voice.mp3")
+		my_clip = VideoFileClip('visualizer/output/project.mp4')
+		audio_background = AudioFileClip('visualizer/emotions/'+emotion+'.mp3')
+		new_audioclip = CompositeAudioClip([audio_background.volumex(0.08), audioclip.volumex(1)])
 
-		final_audio = mpe.CompositeAudioClip([new_audioclip])
-		audio = mpe.afx.audio_loop( final_audio, duration=audioclip.duration)
+		final_audio = CompositeAudioClip([new_audioclip])
+		audio = afx.audio_loop( final_audio, duration=audioclip.duration)
 		final_clip = my_clip.set_audio(audio)
 		final_clip.write_videofile("visualizer/output/"+title+'.mp4')
 		data = title
