@@ -14,9 +14,8 @@ import os
 import dj_database_url
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY_OS = os.environ.get('SECRET_KEY')
 HOST = os.environ.get('HOST')
 PASSWORD = os.environ.get('PASSWORD')
 DATABASE = os.environ.get('DATABASE')
@@ -27,12 +26,11 @@ USER = os.environ.get('USER')
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET_KEY
+SECRET_KEY = SECRET_KEY_OS
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -60,7 +58,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'artilizer.urls'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 TEMPLATES = [
 	{
 		'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -93,6 +90,8 @@ DATABASES = {
 		"PORT": PORT,
 	}
 }
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -131,17 +130,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS =  ['*']
 
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, '')
-
-MEDIA_URL = '/'
-
-DATABASES = { 'default' : dj_database_url.config()}
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
