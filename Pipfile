@@ -17,7 +17,7 @@ moviepy = "*"
 gtts = "*"
 natsort = "*"
 whitenoise = "*"
-gunicorn = "*"
+gunicorn = "==19.7.1"
 dj-database-url = "*"
 psycopg2-binary = "*"
 
